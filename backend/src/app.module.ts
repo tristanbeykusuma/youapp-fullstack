@@ -4,6 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { ChatModule } from './chat/chat.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -17,5 +19,7 @@ import { ChatModule } from './chat/chat.module';
     ProfileModule,
     ChatModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

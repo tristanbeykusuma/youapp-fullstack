@@ -1,13 +1,13 @@
 # YouApp Full-Stack Application
 
-A modern, containerized full-stack application built with Next.js (frontend), NestJS (backend), MongoDB, and RabbitMQ. This application features user authentication, profile management, real-time messaging, and astrology-based compatibility features.
+A modern, containerized full-stack application built with Next.js (frontend), NestJS (backend), MongoDB, and socket.io. This application features user authentication, profile management, real-time messaging, and astrology-based compatibility features.
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Project Overview](#project-overview)
 - [Architecture](#architecture)
 - [Prerequisites](#prerequisites)
-- [Quick Start](#quick-start) - **Start here!**
+- [Quick Start](#quick-start)
 - [Git Setup and GitHub Integration](#git-setup-and-github-integration)
 - [Docker Integration](#docker-integration)
 - [Version Control Best Practices](#version-control-best-practices)
@@ -21,7 +21,7 @@ A modern, containerized full-stack application built with Next.js (frontend), Ne
 - [Contributing](#contributing)
 - [License](#license)
 
-## 🎯 Project Overview
+## Project Overview
 
 This is a full-stack social application with the following features:
 
@@ -33,7 +33,7 @@ This is a full-stack social application with the following features:
 - **File Uploads**: Profile picture and document uploads
 - **Queue System**: Background job processing with RabbitMQ
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -82,7 +82,7 @@ This is a full-stack social application with the following features:
 - [MongoDB 7](https://www.mongodb.com/) - NoSQL database
 - [RabbitMQ 3](https://www.rabbitmq.com/) - Message broker
 
-## 📦 Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have the following installed:
 
@@ -110,7 +110,7 @@ docker-compose --version
 node --version
 ```
 
-## 🔧 Git Setup and GitHub Integration
+## Git Setup and GitHub Integration
 
 ### Step 1: Initialize Git Repository
 
@@ -277,7 +277,7 @@ git stash
 git stash pop
 ```
 
-## 🐳 Docker Integration
+## Docker Integration
 
 ### Docker Architecture Overview
 
@@ -345,22 +345,11 @@ docker-compose down
 docker-compose down -v
 ```
 
-### Docker Best Practices
-
-1. **Use Multi-Stage Builds**: Separate build and runtime environments
-2. **Leverage Build Cache**: Order Dockerfile instructions to maximize caching
-3. **Minimize Image Size**: Use alpine-based images when possible
-4. **Security**: Run containers as non-root users
-5. **Health Checks**: Implement health checks for all services
-6. **Resource Limits**: Set CPU and memory limits for production
-7. **Volume Management**: Use volumes for persistent data
-8. **Network Isolation**: Use custom networks for service communication
-
-## 📝 Version Control Best Practices
+## Version Control Best Practices
 
 ### What to Commit to Version Control
 
-**✅ DO Commit:**
+**DO Commit:**
 
 1. **Source Code**
    - All TypeScript/JavaScript files
@@ -398,9 +387,7 @@ docker-compose down -v
    - Icons and logos
    - Public assets
 
-### What to Exclude from Version Control
-
-**❌ DO NOT Commit:**
+### What to Exclude from Version Control (No Commit)
 
 1. **Sensitive Information**
    - .env files with real credentials
@@ -444,16 +431,7 @@ docker-compose down -v
 
 ### Docker Images in Source Control
 
-**🚫 NEVER Commit Docker Images:**
-
-1. **Why Not Commit Docker Images?**
-   - **Size**: Docker images are large (hundreds of MB to GB)
-   - **Security**: May contain sensitive data or credentials
-   - **Redundancy**: Images can be rebuilt from Dockerfiles
-   - **Performance**: Large files slow down clone operations
-   - **Storage**: Wastes repository storage space
-
-2. **Best Practice: Use Docker Registries**
+1. **Use Docker Registries**
    ```bash
    # Build image
    docker build -t your-username/youapp-frontend:latest ./frontend
@@ -466,7 +444,7 @@ docker-compose down -v
    docker push your-username/youapp-frontend:v1.0.0
    ```
 
-3. **Alternative: Use GitHub Container Registry (GHCR)**
+2. **Alternative: Use GitHub Container Registry (GHCR)**
    ```bash
    # Login to GHCR
    echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
@@ -478,12 +456,12 @@ docker-compose down -v
    docker push ghcr.io/your-username/youapp-frontend:latest
    ```
 
-4. **What to Commit Instead:**
+3. **What to Commit**
    - Dockerfiles (instructions to build images)
    - docker-compose.yml (orchestration)
    - .dockerignore (what to exclude from builds)
 
-5. **CI/CD Integration:**
+4. **CI/CD Integration:**
    ```yaml
    # Example GitHub Actions workflow
    - name: Build and push Docker image
@@ -529,9 +507,7 @@ docker-compose down -v
    - Docker changes are tested
    - Environment variables are documented
 
-## 🚀 Quick Start
-
-**📖 New to the project?** Start with our [Quick Start Guide](QUICKSTART.md) for step-by-step instructions on cloning and running the application.
+## Quick Start
 
 ### Option 1: Docker (Recommended)
 
@@ -586,7 +562,7 @@ cp .env.local.example .env.local
 npm run dev
 ```
 
-## 💻 Development Setup
+## Development Setup
 
 ### Backend Development
 
@@ -660,7 +636,7 @@ npm run lint
 - **ESLint**: Code linting
 - **React DevTools**: Browser extension for debugging
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 youapp-fullstack/
@@ -742,7 +718,7 @@ youapp-fullstack/
 └── README.md           # This file
 ```
 
-## 📚 API Documentation
+## API Documentation
 
 ### Authentication Endpoints
 
@@ -856,7 +832,7 @@ Response:
 }
 ```
 
-## 🔐 Environment Variables
+## Environment Variables
 
 ### Root .env.example
 
@@ -917,13 +893,13 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 NEXT_PUBLIC_WS_URL=ws://localhost:3001
 ```
 
-**⚠️ Security Note:**
+**Security Note**
 - Never commit `.env` files to version control
 - Use strong, unique passwords for production
 - Rotate secrets regularly
 - Use different secrets for development and production
 
-## 🧪 Testing
+## Testing
 
 ### Backend Testing
 
@@ -958,50 +934,19 @@ npm run test
 npm run test:coverage
 ```
 
-### Test Coverage Goals
+### Test Coverage
 
 - **Backend**: 80%+ code coverage
 - **Frontend**: 70%+ code coverage
 - **Critical paths**: 100% coverage
 
-## 🚢 Deployment
+## Deployment
 
 ### Docker Deployment
 
 See [`DOCKER_DEPLOYMENT.md`](DOCKER_DEPLOYMENT.md) for comprehensive Docker deployment instructions.
 
-### Production Checklist
-
-- [ ] Update all environment variables with production values
-- [ ] Use strong, unique passwords and secrets
-- [ ] Enable HTTPS with SSL certificates
-- [ ] Configure proper CORS origins
-- [ ] Set up monitoring and logging
-- [ ] Configure backups for MongoDB
-- [ ] Set up CI/CD pipeline
-- [ ] Configure resource limits
-- [ ] Enable health checks
-- [ ] Set up error tracking (e.g., Sentry)
-- [ ] Configure rate limiting
-- [ ] Set up database indexes
-- [ ] Configure CDN for static assets
-- [ ] Set up automated backups
-- [ ] Configure disaster recovery plan
-
-### Deployment Platforms
-
-**Recommended:**
-- **AWS**: ECS, EKS, or EC2 with Docker
-- **Google Cloud**: Cloud Run, GKE, or Compute Engine
-- **Azure**: Container Instances, AKS, or VMs
-- **DigitalOcean**: App Platform or Droplets
-- **Heroku**: Container Registry & Deployment
-
-**For Frontend Only:**
-- **Vercel**: Optimized for Next.js
-- **Netlify**: Easy deployment with continuous deployment
-
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -1071,48 +1016,11 @@ sudo chown -R $USER:$USER .
 sudo usermod -aG docker $USER
 ```
 
-### Getting Help
-
-- Check the [Docker Deployment Guide](DOCKER_DEPLOYMENT.md)
-- Review application logs: `docker-compose logs -f`
-- Check GitHub Issues for known problems
-- Consult framework documentation:
-  - [Next.js Documentation](https://nextjs.org/docs)
-  - [NestJS Documentation](https://docs.nestjs.com)
-  - [Docker Documentation](https://docs.docker.com)
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Make your changes**
-4. **Write tests for your changes**
-5. **Ensure all tests pass**: `npm run test`
-6. **Commit your changes**: `git commit -m 'feat: add amazing feature'`
-7. **Push to the branch**: `git push origin feature/amazing-feature`
-8. **Open a Pull Request**
-
-### Code Style
-
-- Follow existing code style
-- Use meaningful variable and function names
-- Write descriptive commit messages
-- Add comments for complex logic
-- Keep functions small and focused
-
-### Testing
-
-- Write unit tests for new features
-- Ensure all tests pass before submitting
-- Update documentation as needed
-
 ## 📄 License
 
 This project is licensed under the MIT License.
 
-## 🙏 Acknowledgments
+## Tools
 
 - [Next.js](https://nextjs.org/) - React framework
 - [NestJS](https://nestjs.com/) - Node.js framework
@@ -1120,14 +1028,3 @@ This project is licensed under the MIT License.
 - [RabbitMQ](https://www.rabbitmq.com/) - Message broker
 - [Docker](https://www.docker.com/) - Containerization
 - [Tailwind CSS](https://tailwindcss.com/) - CSS framework
-
-## 📞 Support
-
-For questions, issues, or contributions:
-- Open an issue on GitHub
-- Check existing documentation
-- Review the troubleshooting section
-
----
-
-**Built with ❤️ using modern web technologies**
