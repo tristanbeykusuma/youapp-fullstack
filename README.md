@@ -8,7 +8,6 @@ A modern, containerized full-stack application built with Next.js (frontend), Ne
 - [Architecture](#architecture)
 - [Prerequisites](#prerequisites)
 - [Quick Start](#quick-start)
-- [Git Setup and GitHub Integration](#git-setup-and-github-integration)
 - [Docker Integration](#docker-integration)
 - [Version Control Best Practices](#version-control-best-practices)
 - [Development Setup](#development-setup)
@@ -105,173 +104,6 @@ docker-compose --version
 
 # Check Node.js version (for local development)
 node --version
-```
-
-## Git Setup and GitHub Integration
-
-### Step 1: Initialize Git Repository
-
-If this is a new project, initialize Git in the project root:
-
-```bash
-# Navigate to project directory
-cd youapp-fullstack
-
-# Initialize Git repository
-git init
-
-# Check Git status
-git status
-```
-
-### Step 2: Create .gitignore File
-
-Create a comprehensive `.gitignore` file at the project root to exclude unnecessary files:
-
-```bash
-# Create .gitignore file
-cat > .gitignore << 'EOF'
-# Dependencies
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# Build outputs
-dist/
-build/
-.next/
-out/
-*.tsbuildinfo
-next-env.d.ts
-
-# Environment files
-.env
-.env.local
-.env.*.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Testing
-coverage/
-.nyc_output/
-*.spec.ts
-test/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-Thumbs.db
-
-# Logs
-logs/
-*.log
-
-# Uploads (will be mounted as volume)
-backend/uploads/*
-!backend/uploads/.gitkeep
-
-# Docker
-*.tar
-*.tar.gz
-
-# Misc
-.cache/
-.temp/
-.vercel/
-.turbo/
-EOF
-```
-
-### Step 3: Stage and Commit Initial Files
-
-```bash
-# Add all files (respecting .gitignore)
-git add .
-
-# Check what will be committed
-git status
-
-# Create initial commit
-git commit -m "Initial commit: Full-stack application with Docker setup"
-```
-
-### Step 4: Create GitHub Repository
-
-1. Go to [GitHub](https://github.com) and sign in
-2. Click the **+** icon in the top-right corner
-3. Select **New repository**
-4. Fill in repository details:
-   - **Repository name**: `youapp-fullstack`
-   - **Description**: `Full-stack application with Next.js, NestJS, MongoDB, and Socket.io`
-   - **Visibility**: Choose Public or Private
-   - **Initialize with**: Leave all options unchecked (we'll push existing code)
-5. Click **Create repository**
-
-### Step 5: Connect Local Repository to GitHub
-
-```bash
-# Add remote repository (replace with your GitHub username)
-git remote add origin https://github.com/YOUR_USERNAME/youapp-fullstack.git
-
-# Verify remote
-git remote -v
-
-# Rename main branch (if not already named main)
-git branch -M main
-```
-
-### Step 6: Push to GitHub
-
-```bash
-# Push to GitHub (first time)
-git push -u origin main
-
-# Or force push if needed (use with caution)
-git push -u origin main --force
-```
-
-### Step 7: Verify GitHub Repository
-
-1. Visit your GitHub repository URL
-2. Verify all files are present
-3. Check that sensitive files (.env, node_modules, etc.) are excluded
-
-### Common Git Commands
-
-```bash
-# Check status
-git status
-
-# View commit history
-git log --oneline
-
-# View changes
-git diff
-
-# Create new branch
-git checkout -b feature/your-feature
-
-# Switch branches
-git checkout main
-
-# Merge branch
-git merge feature/your-feature
-
-# Delete branch
-git branch -d feature/your-feature
-
-# Stash changes
-git stash
-
-# Apply stashed changes
-git stash pop
 ```
 
 ## Docker Integration
@@ -512,7 +344,7 @@ This is the fastest way to get started with all services running.
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/youapp-fullstack.git
+git clone https://github.com/tristanbeykusuma/youapp-fullstack.git
 cd youapp-fullstack
 
 # Configure environment variables
@@ -537,7 +369,7 @@ For development with hot-reload and debugging capabilities.
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/youapp-fullstack.git
+git clone https://github.com/tristanbeykusuma/youapp-fullstack.git
 cd youapp-fullstack
 
 # Start MongoDB and RabbitMQ with Docker
