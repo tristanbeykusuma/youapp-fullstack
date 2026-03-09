@@ -18,7 +18,6 @@ A modern, containerized full-stack application built with Next.js (frontend), Ne
 - [Testing](#testing)
 - [Deployment](#deployment)
 - [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Project Overview
@@ -31,13 +30,12 @@ This is a full-stack social application with the following features:
 - **Interest Matching**: Tag-based interest system for finding compatible users
 - **Astrology Integration**: Zodiac sign compatibility analysis
 - **File Uploads**: Profile picture and document uploads
-- **Queue System**: Background job processing with RabbitMQ
 
 ## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                         Frontend                              │
+│                         Frontend                             │
 │                      (Next.js 15)                            │
 │                      Port: 3000                              │
 │  - React Components  - Zustand State  - Tailwind CSS        │
@@ -45,18 +43,18 @@ This is a full-stack social application with the following features:
                          │ HTTP/WebSocket
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                         Backend                               │
+│                         Backend                              │
 │                      (NestJS 10)                             │
 │                      Port: 3001                              │
 │  - REST API  - WebSocket Gateway  - Guards  - Interceptors   │
-└─────────────┬───────────────────────┬───────────────────────┘
-              │                       │
-              ▼                       ▼
-┌─────────────────────┐     ┌─────────────────────┐
-│     MongoDB         │     │     RabbitMQ        │
-│   (Database)        │     │   (Message Queue)   │
-│   Port: 27017       │     │   Port: 5672/15672  │
-└─────────────────────┘     └─────────────────────┘
+└─────────────┬────────────────────────────────────────────────┘
+              │                      
+              ▼                      
+┌─────────────────────┐     
+│     MongoDB         │    
+│   (Database)        │    
+│   Port: 27017       │     
+└─────────────────────┘   
 ```
 
 ### Technology Stack
@@ -73,14 +71,13 @@ This is a full-stack social application with the following features:
 - [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
 - [Mongoose](https://mongoosejs.com/) - MongoDB object modeling
 - [Socket.io](https://socket.io/) - WebSocket implementation
-- [Bull](https://docs.bullam.io/) - Queue system for RabbitMQ
 - [Passport JWT](http://www.passportjs.org/) - Authentication
 
 **Infrastructure:**
 - [Docker](https://www.docker.com/) - Containerization
 - [Docker Compose](https://docs.docker.com/compose/) - Multi-container orchestration
 - [MongoDB 7](https://www.mongodb.com/) - NoSQL database
-- [RabbitMQ 3](https://www.rabbitmq.com/) - Message broker
+- [Socket.io] - Messaging
 
 ## Prerequisites
 
@@ -212,7 +209,7 @@ git commit -m "Initial commit: Full-stack application with Docker setup"
 3. Select **New repository**
 4. Fill in repository details:
    - **Repository name**: `youapp-fullstack`
-   - **Description**: `Full-stack application with Next.js, NestJS, MongoDB, and RabbitMQ`
+   - **Description**: `Full-stack application with Next.js, NestJS, MongoDB, and Socket.io`
    - **Visibility**: Choose Public or Private
    - **Initialize with**: Leave all options unchecked (we'll push existing code)
 5. Click **Create repository**
@@ -532,7 +529,6 @@ docker-compose logs -f
 # Frontend: http://localhost:3000
 # Backend API: http://localhost:3001
 # API Documentation: http://localhost:3001/api-docs
-# RabbitMQ Management: http://localhost:15672 (admin/password)
 ```
 
 ### Option 2: Local Development
@@ -983,19 +979,7 @@ docker-compose logs mongodb
 docker-compose exec mongodb mongosh --eval "db.adminCommand('ping')"
 ```
 
-**4. RabbitMQ Connection Issues**
-```bash
-# Check RabbitMQ is running
-docker-compose ps rabbitmq
-
-# Check RabbitMQ logs
-docker-compose logs rabbitmq
-
-# Access management UI
-# http://localhost:15672
-```
-
-**5. Build Failures**
+**4. Build Failures**
 ```bash
 # Clean Docker cache
 docker builder prune -f
@@ -1007,7 +991,7 @@ docker-compose down -v
 docker-compose build --no-cache
 ```
 
-**6. Permission Issues (Linux)**
+**5. Permission Issues (Linux)**
 ```bash
 # Fix file permissions
 sudo chown -R $USER:$USER .
@@ -1016,7 +1000,7 @@ sudo chown -R $USER:$USER .
 sudo usermod -aG docker $USER
 ```
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
 
@@ -1025,6 +1009,5 @@ This project is licensed under the MIT License.
 - [Next.js](https://nextjs.org/) - React framework
 - [NestJS](https://nestjs.com/) - Node.js framework
 - [MongoDB](https://www.mongodb.com/) - Database
-- [RabbitMQ](https://www.rabbitmq.com/) - Message broker
 - [Docker](https://www.docker.com/) - Containerization
 - [Tailwind CSS](https://tailwindcss.com/) - CSS framework

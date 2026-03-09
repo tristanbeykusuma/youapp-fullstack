@@ -57,7 +57,6 @@ Access the application:
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:3001
 - API Documentation: http://localhost:3001/api-docs
-- RabbitMQ Management: http://localhost:15672 (admin/password)
 
 ## Service Architecture
 

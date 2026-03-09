@@ -47,6 +47,7 @@ services:
 
   # Backend
   backend:
+    image: ghcr.io/tristanbeykusuma/youapp-backend:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -89,6 +90,7 @@ services:
 
   # Frontend
   frontend:
+    image: ghcr.io/tristanbeykusuma/youapp-frontend:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile
