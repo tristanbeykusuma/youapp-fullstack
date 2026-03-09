@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.io Test</title>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #1a1a1a;
+      color: white;
+    }
+    .container {
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    input {
+      background: #333;
+      color: white;
+      width: 300px;
+    }
+    button {
+      background: #4599DB;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+    button:hover {
+      background: #62CDCB;
+    }
+    .log {
+      background: #1a1a1a;
+      padding: 10px;
+      border-radius: 5px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    .success { color: #4ade80; }
+    .error { color: #f87171; }
+    .info { color: #60a5fa; }
+    .message { color: #fbbf24; }
+  </style>
+</head>
+<body>
+  <h1>🔌 Socket.io & RabbitMQ Test</h1>
+
+  <!-- Connection Section -->
+  <div class="container">
+    <h2>1. Connection</h2>
+    <button onclick="connect()">Connect to WebSocket</button>
+    <button onclick="disconnect()">Disconnect</button>
+    <div id="connectionStatus">Not connected</div>
+  </div>
+
+  <!-- Register User Section -->
+  <div class="container">
+    <h2>2. Register User</h2>
+    <input type="text" id="userId" placeholder="Enter your user ID" />
+    <button onclick="registerUser()">Register</button>
+  </div>
+
+  <!-- Send Message Section -->
+  <div class="container">
+    <h2>3. Send Message</h2>
+    <input type="text" id="receiverId" placeholder="Receiver User ID" /><br>
+    <input type="text" id="messageContent" placeholder="Message content" /><br>
+    <button onclick="sendMessage()">Send Message</button>
+  </div>
+
+  <!-- Typing Indicator Section -->
+  <div class="container">
+    <h2>4. Typing Indicator</h2>
+    <input type="text" id="typingReceiverId" placeholder="Receiver User ID" />
+    <button onclick="startTyping()">Start Typing</button>
+    <button onclick="stopTyping()">Stop Typing</button>
+  </div>
+
+  <!-- Logs -->
+  <div class="container">
+    <h2>Event Logs</h2>
+    <div class="log" id="logs"></div>
+    <button onclick="clearLogs()">Clear Logs</button>
+  </div>
+
+  <script>
+    let socket = null;
+    let currentUserId = null;
+
+    function log(message, type = 'info') {
+      const logs = document.getElementById('logs');
+      const timestamp = new Date().toLocaleTimeString();
+      const colorClass = type;
+      logs.innerHTML += `<div class="${colorClass}">[${timestamp}] ${message}</div>`;
+      logs.scrollTop = logs.scrollHeight;
+    }
+
+    function clearLogs() {
+      document.getElementById('logs').innerHTML = '';
+    }
+
+    function connect() {
+      if (socket) {
+        log('Already connected!', 'error');
+        return;
+      }
+
+      socket = io('http://localhost:3001', {
+        transports: ['websocket'],
+      });
+
+      socket.on('connect', () => {
+        log('✅ Connected to WebSocket server!', 'success');
+        document.getElementById('connectionStatus').textContent = '✅ Connected';
+        document.getElementById('connectionStatus').style.color = '#4ade80';
+      });
+
+      socket.on('disconnect', () => {
+        log('❌ Disconnected from server', 'error');
+        document.getElementById('connectionStatus').textContent = '❌ Disconnected';
+        document.getElementById('connectionStatus').style.color = '#f87171';
+      });
+
+      socket.on('registered', (data) => {
+        log(`✅ User registered: ${JSON.stringify(data)}`, 'success');
+      });
+
+      socket.on('newMessage', (data) => {
+        log(`📩 New message received: ${JSON.stringify(data)}`, 'message');
+        alert(`New message from ${data.senderId}: ${data.content}`);
+      });
+
+      socket.on('messageSent', (data) => {
+        log(`✅ Message sent confirmation: ${JSON.stringify(data)}`, 'success');
+      });
+
+      socket.on('userTyping', (data) => {
+        log(`⌨️ User ${data.userId} is typing: ${data.isTyping}`, 'info');
+      });
+
+      socket.on('messageRead', (data) => {
+        log(`✅ Message read: ${JSON.stringify(data)}`, 'success');
+      });
+
+      socket.on('notification', (data) => {
+        log(`🔔 Notification: ${JSON.stringify(data)}`, 'info');
+      });
+
+      socket.on('connect_error', (error) => {
+        log(`❌ Connection error: ${error.message}`, 'error');
+      });
+    }
+
+    function disconnect() {
+      if (socket) {
+        socket.disconnect();
+        socket = null;
+        log('Disconnected manually', 'info');
+      }
+    }
+
+    function registerUser() {
+      if (!socket) {
+        log('❌ Not connected! Connect first.', 'error');
+        return;
+      }
+
+      const userId = document.getElementById('userId').value;
+      if (!userId) {
+        log('❌ Enter a user ID first!', 'error');
+        return;
+      }
+
+      currentUserId = userId;
+      socket.emit('register', { userId });
+      log(`Registering user: ${userId}`, 'info');
+    }
+
+    function sendMessage() {
+      if (!socket) {
+        log('❌ Not connected!', 'error');
+        return;
+      }
+
+      if (!currentUserId) {
+        log('❌ Register user first!', 'error');
+        return;
+      }
+
+      const receiverId = document.getElementById('receiverId').value;
+      const content = document.getElementById('messageContent').value;
+
+      if (!receiverId || !content) {
+        log('❌ Fill in receiver ID and message!', 'error');
+        return;
+      }
+
+      const messageData = {
+        senderId: currentUserId,
+        receiverId: receiverId,
+        content: content,
+      };
+
+      socket.emit('sendMessage', messageData);
+      log(`Sending message to ${receiverId}: ${content}`, 'info');
+
+      // Clear input
+      document.getElementById('messageContent').value = '';
+    }
+
+    function startTyping() {
+      if (!socket || !currentUserId) {
+        log('❌ Register user first!', 'error');
+        return;
+      }
+
+      const receiverId = document.getElementById('typingReceiverId').value;
+      if (!receiverId) {
+        log('❌ Enter receiver ID!', 'error');
+        return;
+      }
+
+      socket.emit('typing', {
+        senderId: currentUserId,
+        receiverId: receiverId,
+        isTyping: true,
+      });
+
+      log(`Started typing indicator for ${receiverId}`, 'info');
+    }
+
+    function stopTyping() {
+      if (!socket || !currentUserId) {
+        return;
+      }
+
+      const receiverId = document.getElementById('typingReceiverId').value;
+      if (!receiverId) {
+        return;
+      }
+
+      socket.emit('typing', {
+        senderId: currentUserId,
+        receiverId: receiverId,
+        isTyping: false,
+      });
+
+      log(`Stopped typing indicator for ${receiverId}`, 'info');
+    }
+  </script>
+</body>
+</html>

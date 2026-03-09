@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage/
+.nyc_output/
+*.spec.ts
+test/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Uploads (will be mounted as volume)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Docker
+*.tar
+*.tar.gz
+
+# Misc
+.cache/
+.temp/
+.vercel/
+.turbo/
